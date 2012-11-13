@@ -5,6 +5,8 @@ from funfactory.settings_base import *
 
 TIME_ZONE = 'UTC'
 
+PROJECT_MODULE = 'make_mozilla'
+
 # Bundles is a dictionary of two dictionaries, css and js, which list css files
 # and js files that can be bundled together by the minify app.
 MINIFY_BUNDLES = {
@@ -133,18 +135,16 @@ MIDDLEWARE_CLASSES = list(MIDDLEWARE_CLASSES) + [
 # Tells the extract script what files to look for L10n in and what function
 # handles the extraction. The Tower library expects this.
 
-# # Use this if you have localizable HTML files:
-# DOMAIN_METHODS['lhtml'] = [
-#    ('**/templates/**.lhtml',
-#        'tower.management.commands.extract.extract_tower_template'),
-# ]
-
-# # Use this if you have localizable HTML files:
-# DOMAIN_METHODS['javascript'] = [
-#    # Make sure that this won't pull in strings from external libraries you
-#    # may use.
-#    ('media/js/**.js', 'javascript'),
-# ]
+DOMAIN_METHODS = {
+    'messages': [
+        # Searching apps dirs only exists for historic playdoh apps.
+        # See playdoh's base settings for how message paths are set.
+        ('**/templates/**.html',
+            'tower.management.commands.extract.extract_tower_template'),
+        ('templates/**.html',
+            'tower.management.commands.extract.extract_tower_template'),
+    ],
+}
 
 SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_HTTPONLY = True
@@ -186,6 +186,15 @@ UPLOADED_IMAGES = {
     'location': '/var/webapps/make.mozilla.org/shared/partner_media',
     'base_url': '/media/partner_media/'
 }
+
+LOCALE_PATHS = (
+    os.path.join(ROOT, PROJECT_MODULE, 'locale'),
+)
+
+ROOT = os.path.join(ROOT, PROJECT_MODULE)
+
+# directory to place extracted files into - ready for tower to extract the strings
+EXTRACTED_TEXT_DIR = '/var/webapps/make.mozilla.org/shared/text_extractions'
 
 BSD_API_DETAILS = {}
 

@@ -1,10 +1,14 @@
 import hashlib
 import urllib
+
 from django.utils.safestring import mark_safe
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.db.models import signals
+from django.dispatch import receiver
+
 from make_mozilla import tools
 from make_mozilla import events
 from make_mozilla.core import fields
@@ -36,7 +40,7 @@ class Project(models.Model):
     skills = models.ManyToManyField('Skill', blank=True, null=True)
 
     class Meta:
-        ordering = ['-added',]
+        ordering = ['-added', ]
 
     def __init__(self, *args, **kwargs):
         super(Project, self).__init__(*args, **kwargs)
@@ -130,6 +134,18 @@ class Skill(ProjectTag):
     pass
 
 
+@receiver(signals.post_save, sender=Project)
+def create_text_template(instance, **kwargs):
+    path = settings.EXTRACTED_TEXT_DIR + '/%s.html' % instance.slug
+    file = open(path, 'w')
+    file.write("{{ _('%s') }}\n{{ _('%s') }}\n{{ _('%s') }}" % (
+            instance.name,
+            instance.teaser,
+            instance.body,
+        ))
+    file.close()
+
+
 class Contributor(models.Model):
     local_name = models.CharField(max_length=255, verbose_name='Name')
     partner = models.ForeignKey(events.models.Partner, blank=True, null=True)
@@ -147,7 +163,7 @@ class Contributor(models.Model):
     def website(self):
         if self.partner:
             return self.partner.website
-        return none
+        return None
 
     @property
     def logo(self):
