@@ -24,10 +24,6 @@ def index(request):
     })
 
 
-def videos(request):
-    return jingo.render(request, 'videos.html', {})
-
-
 def fail(request):
     return jingo.render(request, '404.html', {}, status=404)
 

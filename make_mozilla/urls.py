@@ -10,9 +10,8 @@ import make_mozilla.tools.urls
 import make_mozilla.projects.urls
 import make_mozilla.users.urls
 import make_mozilla.pages.urls
+import make_mozilla.static_pages.urls
 import make_mozilla.news.urls
-
-from make_mozilla.events import views
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib.gis import admin
@@ -23,13 +22,10 @@ urlpatterns = patterns('',
     url(r'^ja/',
         lambda x: HttpResponseRedirect('http://www.mozillafactory.org/ja/webmaker/')
     ),
-    url(r'^videos/',    'make_mozilla.base.views.root.videos',  name="video_page"),
     url(r'^events/',    include(make_mozilla.events.urls)),
     url(r'^tools/',     include(make_mozilla.tools.urls)),
     url(r'^projects/',  include(make_mozilla.projects.urls)),
     url(r'^users/',     include(make_mozilla.users.urls)),
-    url(r'^hall-of-fame/$',
-        views.hoc_2012,     name='hoc_2012'),
     # browserid endpoints
     url(r'^browserid/', include('django_browserid.urls')),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout',
@@ -40,7 +36,7 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
-    (r'', include('make_mozilla.static_pages.urls')),
+    (r'', include(make_mozilla.static_pages.urls)),
     (r'', include(make_mozilla.pages.urls)),
 )
 

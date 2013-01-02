@@ -1,6 +1,6 @@
 {% extends "events/base.html" %}
 
-{% block page_title %}Summer Code Party Hall of Fame, 2012 | {{ super() }}
+{% block page_title %}Hall of Fame | {{ super() }}
 {% endblock %}
 
 {% block page_id %}hoc_2012{% endblock %}
@@ -12,7 +12,7 @@
         <!-- hall of fame intro -->
         <img class="block_img" alt="Mozilla Webmaker Hall of Fame" src="{{ MEDIA_URL }}assets/hoc_2012/header.jpg" />
         <h2 class="announce">The Webmaker Hall of Fame wants YOUR Contribution!</h2>
-        <p><strong>Share your highlights with us!</strong> What was the most amazing thing you made or saw this summer? Who inspired you, taught you, or helped you most? Who should the <a href="https://webmaker.org">Mozilla Webmaker</a> and <a href="https://webmaker.org/en-US/events/">Summer Code Party</a> community learn about, or get to know? Tell us here.</p>
+        <p><strong>Share your highlights with us!</strong> What was the most amazing thing you made or saw this summer? Who inspired you, taught you, or helped you most? Who should the <a href="{{ url('splash') }}">Mozilla Webmaker</a> and <a href="{{ url('events') }}">Summer Code Party</a> community learn about, or get to know? Tell us here.</p>
         <p><a class="button create" href="http://mozillawebmaker.tumblr.com/submit">Submit to the hall of fame</a></p>
     </div>
 </section>
